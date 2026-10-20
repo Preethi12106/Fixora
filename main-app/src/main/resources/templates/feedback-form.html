@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container small-container">
+    <header class="topbar">
+        <h1>Feedback</h1>
+        <nav>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/complaints}">Complaints</a>
+        </nav>
+    </header>
+
+    <div class="card">
+        <div th:if="${successMessage != null}" class="success-message">[[${successMessage}]]</div>
+        <div th:if="${errorMessage != null}" class="error-message" role="alert">[[${errorMessage}]]</div>
+
+        <form th:action="@{/feedback}" th:object="${feedback}" method="post">
+            <div class="form-group">
+                <label for="rating">Rating (1 to 5)</label>
+                <select id="rating" th:field="*{rating}" required>
+                    <option value="">Choose a rating</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <div class="error" th:if="${#fields.hasErrors('rating')}">[[${#fields.errors('rating')}]]</div>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">Feedback comments</label>
+                <textarea id="comments" th:field="*{comments}" rows="5" maxlength="2000" placeholder="Tell us how we can improve" required></textarea>
+                <div class="error" th:if="${#fields.hasErrors('comments')}">[[${#fields.errors('comments')}]]</div>
+            </div>
+
+            <div class="button-row">
+                <button type="submit" class="button primary">Submit Feedback</button>
+                <a class="button secondary" th:href="@{/}">Back to Home</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

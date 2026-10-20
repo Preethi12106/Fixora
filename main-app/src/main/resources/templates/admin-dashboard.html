@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Warden Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <header class="topbar">
+        <h1>Warden Dashboard</h1>
+        <nav>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/complaints}">View Complaints</a>
+            <a th:href="@{/complaints/new}">Submit Complaint</a>
+        </nav>
+    </header>
+
+    <main class="card">
+        <div th:if="${successMessage != null}" class="success-message" role="status">[[${successMessage}]]</div>
+        <div th:if="${errorMessage != null}" class="error-message" role="alert">[[${errorMessage}]]</div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Room</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th>Manage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(complaints)}">
+                <td colspan="7" class="empty-state">No complaints available.</td>
+            </tr>
+            <tr th:each="complaint : ${complaints}">
+                <td>[[${complaint.id}]]</td>
+                <td><a th:href="@{/complaints/{id}(id=${complaint.id})}">[[${complaint.title}]]</a></td>
+                <td>[[${complaint.category}]]</td>
+                <td>[[${complaint.roomNumber}]]</td>
+                <td>[[${#temporals.format(complaint.createdAt, 'dd-MM-yyyy HH:mm')}]]</td>
+                <td>
+                    <span class="status-pill"
+                          th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(complaint.status.name(), '_', ' ')))}"></span>
+                </td>
+                <td>
+                    <form th:action="@{/warden/complaints/{id}/status(id=${complaint.id})}" method="post" class="inline-form">
+                        <label class="visually-hidden" th:for="${'status-' + complaint.id}">Update status</label>
+                        <select name="status" th:id="${'status-' + complaint.id}">
+                            <option value="PENDING" th:selected="${complaint.status.name() == 'PENDING'}">Pending</option>
+                            <option value="IN_PROGRESS" th:selected="${complaint.status.name() == 'IN_PROGRESS'}">In Progress</option>
+                            <option value="RESOLVED" th:selected="${complaint.status.name() == 'RESOLVED'}">Resolved</option>
+                        </select>
+                        <button type="submit" class="button small">Update</button>
+                    </form>
+                    <form th:action="@{/warden/complaints/{id}/delete(id=${complaint.id})}" method="post" class="inline-form">
+                        <button type="submit" class="button danger small">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Maven
+main-app/target/
+notification-service/target/
+**/target/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local config/secrets
+*.local
+.env
+application-local.properties

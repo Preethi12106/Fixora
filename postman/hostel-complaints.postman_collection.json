@@ -1,0 +1,165 @@
+{
+  "info": {
+    "name": "Fixora - Hostel Complaints and Feedback API",
+    "description": "Requests for the main app and the independent Notification Service. Start both apps before sending requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "mainUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "notificationUrl",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "complaintId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Complaints",
+      "item": [
+        {
+          "name": "Get all complaints",
+          "request": {
+            "method": "GET",
+            "url": "{{mainUrl}}/api/complaints"
+          }
+        },
+        {
+          "name": "Get complaint by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{mainUrl}}/api/complaints/{{complaintId}}"
+          }
+        },
+        {
+          "name": "Find complaints by status (HQL)",
+          "request": {
+            "method": "GET",
+            "url": "{{mainUrl}}/api/complaints/search/status/PENDING"
+          }
+        },
+        {
+          "name": "Find complaints by category (HQL)",
+          "request": {
+            "method": "GET",
+            "url": "{{mainUrl}}/api/complaints/search/category/Electrical"
+          }
+        },
+        {
+          "name": "Create complaint",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Fan not working\",\n  \"description\": \"Ceiling fan in room 204 is not rotating properly.\",\n  \"category\": \"Electrical\",\n  \"roomNumber\": \"204\"\n}"
+            },
+            "url": "{{mainUrl}}/api/complaints"
+          }
+        },
+        {
+          "name": "Update complaint details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Fan repair requested\",\n  \"description\": \"The ceiling fan in room 204 is not rotating properly.\",\n  \"category\": \"Electrical\",\n  \"roomNumber\": \"204\"\n}"
+            },
+            "url": "{{mainUrl}}/api/complaints/{{complaintId}}"
+          }
+        },
+        {
+          "name": "Update complaint status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"In Progress\"\n}"
+            },
+            "url": "{{mainUrl}}/api/complaints/{{complaintId}}/status"
+          }
+        },
+        {
+          "name": "Delete complaint",
+          "request": {
+            "method": "DELETE",
+            "url": "{{mainUrl}}/api/complaints/{{complaintId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feedback",
+      "item": [
+        {
+          "name": "Get feedback",
+          "request": {
+            "method": "GET",
+            "url": "{{mainUrl}}/api/feedback"
+          }
+        },
+        {
+          "name": "Create feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comments\": \"The hostel maintenance team responded quickly.\"\n}"
+            },
+            "url": "{{mainUrl}}/api/feedback"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification Service",
+      "item": [
+        {
+          "name": "Send notification request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"complaintId\": 1,\n  \"message\": \"A new hostel complaint was submitted.\"\n}"
+            },
+            "url": "{{notificationUrl}}/api/notifications"
+          }
+        }
+      ]
+    }
+  ]
+}

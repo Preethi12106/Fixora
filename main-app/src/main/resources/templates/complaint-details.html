@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Complaint Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container small-container">
+    <header class="topbar">
+        <h1>Complaint Details</h1>
+        <nav>
+            <a th:href="@{/complaints}">Complaint List</a>
+            <a th:href="@{/admin}">Warden Dashboard</a>
+        </nav>
+    </header>
+
+    <main class="card">
+        <dl class="details-list">
+            <dt>Complaint ID</dt>
+            <dd>[[${complaint.id}]]</dd>
+            <dt>Title</dt>
+            <dd>[[${complaint.title}]]</dd>
+            <dt>Description</dt>
+            <dd class="preserve-whitespace">[[${complaint.description}]]</dd>
+            <dt>Category</dt>
+            <dd>[[${complaint.category}]]</dd>
+            <dt>Room number</dt>
+            <dd>[[${complaint.roomNumber}]]</dd>
+            <dt>Submitted</dt>
+            <dd>[[${#temporals.format(complaint.createdAt, 'dd-MM-yyyy HH:mm')}]]</dd>
+            <dt>Status</dt>
+            <dd th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(complaint.status.name(), '_', ' ')))}"></dd>
+        </dl>
+        <div class="button-row">
+            <a class="button secondary" th:href="@{/complaints}">Back to Complaints</a>
+            <a class="button primary" th:href="@{/admin}">Warden Dashboard</a>
+        </div>
+    </main>
+</div>
+</body>
+</html>

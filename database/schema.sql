@@ -1,0 +1,21 @@
+CREATE DATABASE IF NOT EXISTS hostel_complaint_db;
+USE hostel_complaint_db;
+
+CREATE TABLE IF NOT EXISTS complaints (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(120) NOT NULL,
+    description TEXT NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    room_number VARCHAR(50) NOT NULL,
+    status VARCHAR(30) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS feedbacks (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comments TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
